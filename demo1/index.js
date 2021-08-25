@@ -1,27 +1,31 @@
-const http = require('http')
-const api = require('./api')
-const express = require('express')
-// const bodyParser = require('body-parser')    //已弃用express已在内部实现post解析库的支持
-const app = express()
+//express综合处理模块
+const api = require('./api');
+var http = require('http')
 
-app.all('*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin","http:localhost:8080")
-    res.header("Access-Control-Allow-Credentials", true)
-    res.header("Access-Control-Allow-Methods","GET,POST,PUT,HEAD,OPTIONS")
-    res.header("Access-Control-Allow-Headers","Origin, X-Requested-with, Content-Type, Accept, Authorization")
-    next()
-})
-// app.use(bodyParser.json());  //已弃用express已在内部实现post解析库的支持
+//解析前端发送来的数据
+// const bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+
+//创建 application/json 解析,处理跨域
+app.all('*', function(req, res, next) { // 先后顺序一定要对！！！
+  res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization,application/x-wwww-form-urlencoded");
+  next();
+});
 app.use(express.json());
+// 创建 application/x-www-form-urlencoded 解析
 app.use(express.urlencoded({extended: false}));
 app.use(api);
 
-app.use((req, res)=>{
 
+
+app.use((req,res) => {
+  
 })
-
 const port = 3000;
-app.listen(port,()=>{
-    console.log('express server start at port 3000')
-})
-
+app.listen(port, () => {
+    console.log('Express server listening on port ' + port);
+  });

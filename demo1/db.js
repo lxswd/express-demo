@@ -23,8 +23,8 @@ const registerSchema = mongoose.Schema({
 })
 
 const Models = {
-    login: mongoose.model("user",loginSchema ),
-    register:mongoose.model("register",registerSchema)
+    login: mongoose.model("user",loginSchema,"user"),
+    register:mongoose.model("register",registerSchema, "register")
     // command_list:mongoose.model("command_list",commandListSchema),
     // bmi_list:mongoose.model('bmi_list',BMIListSchema)
 }

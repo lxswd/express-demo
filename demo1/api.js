@@ -1,4 +1,6 @@
 const models = require("./db");
+const test = require('./test')
+
 const express = require("express");
 const router = express.Router();
 
@@ -8,11 +10,13 @@ const bcrypt = require('bcrypt');//密码加密
 const { jwtSign, jwtCheck } = require('./jwt');
 
 
-
 var ObjectId = require('mongodb').ObjectID;
 
 //register
 router.post('/api/user/register', (req, res) => {
+    // console.log('这是query',req.query)
+    // console.log('这是body',req.body)
+    // return
     models.register.find({
         name: req.body.name
     }, (err, data) => {
@@ -31,7 +35,7 @@ router.post('/api/user/register', (req, res) => {
                 })
             } else {
                 const hashPwd = bcrypt.hashSync(req.body.password, 10);
-                let newUser = new models.login({
+                let newUser = new models.register({
                     name: req.body.name,
                     password: hashPwd,
                     phone:req.body.phone
@@ -57,7 +61,8 @@ router.post('/api/user/register', (req, res) => {
 
 //login
 router.post('/api/user/login', (req, res) => {
-    models.login.find({ name: req.body.name }, (err, data) => {
+    console.log('登录数据',req.body)
+    models.register.find({ name: req.body.name }, (err, data) => {
         console.log(data)
         if (data.length <=0) {
             res.send({
